@@ -11,7 +11,7 @@ import (
 
 func MySQL_PoolSetting_Test(maxConn, idleConn, queryNum int) int64 {
 	start := time.Now().UnixNano()
-	db, _ := sql.Open("mysql", "root:root@tcp(127.0.0.1:3306)/dd")
+	db, _ := sql.Open("mysql", "root:root@tcp(127.0.0.1:3306)/mysql")
 
 	defer db.Close()
 
@@ -21,7 +21,7 @@ func MySQL_PoolSetting_Test(maxConn, idleConn, queryNum int) int64 {
 	for i := 0; i < queryNum; i++ {
 		wg.Add(1)
 		go func(i int) {
-			mSql := "select * from dd_logs"
+			mSql := "SELECT `Host`,`User`,`Plugin` FROM `mysql`.`user` limit 1"
 
 			rows, _ := db.Query(mSql)
 			rows.Close()
